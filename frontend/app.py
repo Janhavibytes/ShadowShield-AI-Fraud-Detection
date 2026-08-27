@@ -138,9 +138,7 @@ st.divider()
 # ---------------- ANALYSIS ----------------
 if st.button("Analyze Transaction"):
 
-    if st.button("Analyze Transaction"):
-
-    # Create a 30-feature transaction row:
+    # Create a 30-feature transaction row
     # Time + V1 to V28 + Amount
     row = pd.DataFrame([[
         time,
@@ -158,10 +156,12 @@ if st.button("Analyze Transaction"):
         "Amount"
     ])
 
+    # Predict fraud probability
     prob = model.predict_proba(row)[0][1]
 
     risk = round(prob * 100)
 
+    # ---------------- RESULT ----------------
     st.subheader("Detection Result")
 
     st.metric(
@@ -176,6 +176,7 @@ if st.button("Analyze Transaction"):
 
     st.progress(float(prob))
 
+    # ---------------- RISK LEVEL ----------------
     if prob >= 0.70:
 
         st.error(
@@ -196,6 +197,7 @@ if st.button("Analyze Transaction"):
 
     st.divider()
 
+    # ---------------- ANALYSIS ----------------
     st.subheader("Analysis")
 
     if prob >= 0.70:
@@ -214,6 +216,14 @@ if st.button("Analyze Transaction"):
 • Moderate deviation detected
 
 • Additional verification suggested
+""")
+
+    else:
+
+        st.write("""
+• Pattern aligns with expected behavior
+
+• Low fraud confidence
 """)
 
     else:
