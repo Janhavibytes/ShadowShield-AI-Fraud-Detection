@@ -140,21 +140,17 @@ if st.button("Analyze Transaction"):
 
     # Create a 30-feature transaction row
     # Time + V1 to V28 + Amount
-    row = pd.DataFrame([[
-        time,
-        0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0,
-        amount
-    ]], columns=[
-        "Time",
-        "V1", "V2", "V3", "V4", "V5", "V6", "V7",
-        "V8", "V9", "V10", "V11", "V12", "V13", "V14",
-        "V15", "V16", "V17", "V18", "V19", "V20", "V21",
-        "V22", "V23", "V24", "V25", "V26", "V27", "V28",
-        "Amount"
-    ])
+       row = pd.DataFrame(
+        [[time] + [0.0] * 28 + [amount]],
+        columns=[
+            "Time",
+            "V1", "V2", "V3", "V4", "V5", "V6", "V7",
+            "V8", "V9", "V10", "V11", "V12", "V13", "V14",
+            "V15", "V16", "V17", "V18", "V19", "V20", "V21",
+            "V22", "V23", "V24", "V25", "V26", "V27", "V28",
+            "Amount"
+        ]
+    )
 
     # Predict fraud probability
     prob = model.predict_proba(row)[0][1]
