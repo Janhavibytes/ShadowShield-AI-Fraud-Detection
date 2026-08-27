@@ -226,14 +226,6 @@ if st.button("Analyze Transaction"):
 • Low fraud confidence
 """)
 
-    else:
-
-        st.write("""
-• Pattern aligns with expected behavior
-
-• Low fraud confidence
-""")
-
 st.divider()
 
 st.caption(
