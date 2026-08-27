@@ -88,7 +88,6 @@ BASE_DIR,
 
 # ---------------- LOAD ----------------
 model = joblib.load(MODEL_PATH)
-df = pd.read_csv(DATA_PATH)
 
 # ---------------- METRICS ----------------
 m1,m2,m3=st.columns(3)
