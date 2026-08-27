@@ -138,48 +138,31 @@ st.divider()
 # ---------------- ANALYSIS ----------------
 if st.button("Analyze Transaction"):
 
-    if amount>5000:
+    if st.button("Analyze Transaction"):
 
-        row=(
-            df[
-                df["Class"]==1
-            ]
+    # Create a 30-feature transaction row:
+    # Time + V1 to V28 + Amount
+    row = pd.DataFrame([[
+        time,
+        0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        amount
+    ]], columns=[
+        "Time",
+        "V1", "V2", "V3", "V4", "V5", "V6", "V7",
+        "V8", "V9", "V10", "V11", "V12", "V13", "V14",
+        "V15", "V16", "V17", "V18", "V19", "V20", "V21",
+        "V22", "V23", "V24", "V25", "V26", "V27", "V28",
+        "Amount"
+    ])
 
-            .sample(1)
+    prob = model.predict_proba(row)[0][1]
 
-            .drop(
-                columns=["Class"]
-            )
-        )
+    risk = round(prob * 100)
 
-    else:
-
-        row=(
-            df[
-                df["Class"]==0
-            ]
-
-            .sample(1)
-
-            .drop(
-                columns=["Class"]
-            )
-        )
-
-    row.iloc[0,0]=time
-    row.iloc[0,-1]=amount
-
-    prob=model.predict_proba(
-        row
-    )[0][1]
-
-    risk=round(
-        prob*100
-    )
-
-    st.subheader(
-        "Detection Result"
-    )
+    st.subheader("Detection Result")
 
     st.metric(
         "Fraud Probability",
@@ -191,17 +174,15 @@ if st.button("Analyze Transaction"):
         f"{risk}/100"
     )
 
-    st.progress(
-        float(prob)
-    )
+    st.progress(float(prob))
 
-    if prob>=0.70:
+    if prob >= 0.70:
 
         st.error(
             "⚠ HIGH RISK TRANSACTION DETECTED"
         )
 
-    elif prob>=0.30:
+    elif prob >= 0.30:
 
         st.warning(
             "🟡 SUSPICIOUS ACTIVITY"
@@ -215,11 +196,9 @@ if st.button("Analyze Transaction"):
 
     st.divider()
 
-    st.subheader(
-        "Analysis"
-    )
+    st.subheader("Analysis")
 
-    if prob>=0.70:
+    if prob >= 0.70:
 
         st.write("""
 • Multiple abnormal indicators detected
@@ -229,7 +208,7 @@ if st.button("Analyze Transaction"):
 • Manual analyst review recommended
 """)
 
-    elif prob>=0.30:
+    elif prob >= 0.30:
 
         st.write("""
 • Moderate deviation detected
